@@ -15,8 +15,27 @@ export const Route = createFileRoute("/")({
 function Admin() {
   const [active, setActive] = useState<string | null>(null);
   const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
+  const [adding, setAdding] = useState(false);
 
   const model = active ? getModel(active) ?? null : null;
+
+  const goList = (n: string) => { setActive(n); setSelectedRow(null); setAdding(false); };
+  const goHome = () => { setActive(null); setSelectedRow(null); setAdding(false); };
+
+  const emptyRow = (m: Model): Record<string, any> => {
+    const sample = m.rows[0] ?? {};
+    const blank: Record<string, any> = {};
+    for (const k of Object.keys(sample)) {
+      const v = sample[k];
+      if (k === "id") blank[k] = "(auto-generated)";
+      else if (typeof v === "boolean") blank[k] = false;
+      else if (Array.isArray(v)) blank[k] = [];
+      else if (typeof v === "object" && v !== null) blank[k] = {};
+      else if (typeof v === "number") blank[k] = 0;
+      else blank[k] = "";
+    }
+    return blank;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,28 +43,35 @@ function Admin() {
       <Breadcrumbs
         model={model}
         selectedRow={selectedRow}
-        onHome={() => { setActive(null); setSelectedRow(null); }}
-        onBackToList={() => setSelectedRow(null)}
+        adding={adding}
+        onHome={goHome}
+        onBackToList={() => { setSelectedRow(null); setAdding(false); }}
       />
       <div className="mx-auto max-w-[1400px] px-5 py-6 grid grid-cols-[1fr_280px] gap-6">
         <main>
-          {!model && <Dashboard onPick={(n) => { setActive(n); setSelectedRow(null); }} />}
-          {model && !selectedRow && (
-            <ListView model={model} onOpen={(row) => setSelectedRow(row)} />
+          {!model && <Dashboard onPick={goList} onAdd={goList} />}
+          {model && !selectedRow && !adding && (
+            <ListView
+              model={model}
+              onOpen={(row) => setSelectedRow(row)}
+              onAdd={() => setAdding(true)}
+            />
           )}
-          {model && selectedRow && (
-            <DetailView model={model} row={selectedRow} onBack={() => setSelectedRow(null)} />
+          {model && (selectedRow || adding) && (
+            <DetailView
+              model={model}
+              row={selectedRow ?? emptyRow(model)}
+              isNew={adding}
+              onBack={() => { setSelectedRow(null); setAdding(false); }}
+            />
           )}
         </main>
-        <Sidebar
-          activeModel={active}
-          onPick={(n) => { setActive(n); setSelectedRow(null); }}
-          onHome={() => { setActive(null); setSelectedRow(null); }}
-        />
+        <Sidebar activeModel={active} onPick={goList} onHome={goHome} />
       </div>
     </div>
   );
 }
+
 
 function Header() {
   return (
