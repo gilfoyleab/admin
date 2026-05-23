@@ -95,7 +95,7 @@ function Header() {
 }
 
 function Breadcrumbs({
-  model, selectedRow, onHome, onBackToList,
+  model, selectedRow, adding, onHome, onBackToList,
 }: {
   model: Model | null;
   selectedRow: Record<string, any> | null;
