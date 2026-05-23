@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { models, modelsByApp, getModel, type Model } from "@/lib/admin-data";
+import { models, modelsByApp, getModel, type Model, type Column } from "@/lib/admin-data";
 
 export const Route = createFileRoute("/")({
   component: Admin,
