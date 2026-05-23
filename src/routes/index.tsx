@@ -99,9 +99,11 @@ function Breadcrumbs({
 }: {
   model: Model | null;
   selectedRow: Record<string, any> | null;
+  adding?: boolean;
   onHome: () => void;
   onBackToList: () => void;
 }) {
+
   return (
     <div className="bg-[oklch(0.96_0.005_230)] border-b border-border">
       <div className="mx-auto max-w-[1400px] px-5 py-2 text-xs text-muted-foreground">
@@ -111,17 +113,24 @@ function Breadcrumbs({
             <span className="mx-1">›</span>
             <span className="text-link">{model.app}</span>
             <span className="mx-1">›</span>
-            {selectedRow ? (
+            {(selectedRow || adding) ? (
               <button onClick={onBackToList} className="text-link hover:underline">{model.verbosePlural}</button>
             ) : (
               <span className="text-foreground">{model.verbosePlural}</span>
             )}
-            {selectedRow && (
+            {adding && (
+              <>
+                <span className="mx-1">›</span>
+                <span className="text-foreground">Add {model.verbose.toLowerCase()}</span>
+              </>
+            )}
+            {selectedRow && !adding && (
               <>
                 <span className="mx-1">›</span>
                 <span className="text-foreground truncate">{String(selectedRow.id).slice(0, 8)}…</span>
               </>
             )}
+
           </>
         )}
       </div>
@@ -179,7 +188,7 @@ function Module({ title, children }: { title: string; children: React.ReactNode 
   );
 }
 
-function Dashboard({ onPick }: { onPick: (n: string) => void }) {
+function Dashboard({ onPick, onAdd }: { onPick: (n: string) => void; onAdd: (n: string) => void }) {
   const grouped = modelsByApp();
   return (
     <div className="space-y-5">
@@ -187,7 +196,6 @@ function Dashboard({ onPick }: { onPick: (n: string) => void }) {
         <section key={app} className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
           <h2 className="bg-primary text-primary-foreground text-[12px] uppercase tracking-wide font-semibold px-3 py-1.5 flex justify-between">
             <span>{app}</span>
-            <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground normal-case font-normal text-[11px]">+ Add</a>
           </h2>
           <table className="w-full text-sm">
             <tbody>
@@ -199,7 +207,7 @@ function Dashboard({ onPick }: { onPick: (n: string) => void }) {
                     </button>
                   </td>
                   <td className="px-3 py-2 text-right text-xs">
-                    <a href="#" className="text-link hover:underline mr-3">+ Add</a>
+                    <button onClick={() => onAdd(m.name)} className="text-link hover:underline mr-3">+ Add</button>
                     <button onClick={() => onPick(m.name)} className="text-link hover:underline">Change</button>
                   </td>
                 </tr>
@@ -212,7 +220,8 @@ function Dashboard({ onPick }: { onPick: (n: string) => void }) {
   );
 }
 
-function ListView({ model, onOpen }: { model: Model; onOpen: (row: Record<string, any>) => void }) {
+
+function ListView({ model, onOpen, onAdd }: { model: Model; onOpen: (row: Record<string, any>) => void; onAdd: () => void }) {
   const [q, setQ] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
@@ -230,11 +239,15 @@ function ListView({ model, onOpen }: { model: Model; onOpen: (row: Record<string
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-[20px] font-normal text-foreground">Select {model.verbose.toLowerCase()} to change</h1>
-        <a href="#" className="bg-success text-white text-xs font-semibold px-3 py-2 rounded-[var(--radius)] hover:opacity-90"
-           style={{ background: "var(--color-success)", color: "white" }}>
+        <button
+          onClick={onAdd}
+          className="text-xs font-semibold px-3 py-2 rounded-[var(--radius)] hover:opacity-90"
+          style={{ background: "var(--color-success)", color: "white" }}
+        >
           ADD {model.verbose.toUpperCase()} +
-        </a>
+        </button>
       </div>
+
 
       <div className="bg-card border border-border rounded-[var(--radius)]">
         <div className="p-3 border-b border-border flex gap-2">
@@ -320,14 +333,15 @@ function ListView({ model, onOpen }: { model: Model; onOpen: (row: Record<string
   );
 }
 
-function DetailView({ model, row, onBack }: { model: Model; row: Record<string, any>; onBack: () => void }) {
+function DetailView({ model, row, isNew, onBack }: { model: Model; row: Record<string, any>; isNew?: boolean; onBack: () => void }) {
   const keys = Object.keys(row);
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-[20px] font-normal">Change {model.verbose.toLowerCase()}</h1>
-        <a href="#" className="text-xs text-link hover:underline">History</a>
+        <h1 className="text-[20px] font-normal">{isNew ? `Add ${model.verbose.toLowerCase()}` : `Change ${model.verbose.toLowerCase()}`}</h1>
+        {!isNew && <a href="#" className="text-xs text-link hover:underline">History</a>}
       </div>
+
       <div className="bg-card border border-border rounded-[var(--radius)]">
         <h2 className="bg-primary text-primary-foreground text-[12px] uppercase tracking-wide font-semibold px-3 py-1.5">
           {model.verbose}
