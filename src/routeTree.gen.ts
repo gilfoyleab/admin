@@ -9,38 +9,563 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as NotebooksRouteImport } from './routes/notebooks'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
+import { Route as AdminKnowledgeRouteImport } from './routes/admin/knowledge'
+import { Route as ApiAdminUsersRouteImport } from './routes/api/admin/users'
+import { Route as ApiAdminStudentProfilesRouteImport } from './routes/api/admin/student-profiles'
+import { Route as ApiAdminSessionRouteImport } from './routes/api/admin/session'
+import { Route as ApiAdminRevisionNotesRouteImport } from './routes/api/admin/revision-notes'
+import { Route as ApiAdminPromptTemplatesRouteImport } from './routes/api/admin/prompt-templates'
+import { Route as ApiAdminPaymentsRouteImport } from './routes/api/admin/payments'
+import { Route as ApiAdminNotebooksRouteImport } from './routes/api/admin/notebooks'
+import { Route as ApiAdminNoteRevisionLogsRouteImport } from './routes/api/admin/note-revision-logs'
+import { Route as ApiAdminKnowledgeDocumentsRouteImport } from './routes/api/admin/knowledge-documents'
+import { Route as ApiAdminKnowledgeChunksRouteImport } from './routes/api/admin/knowledge-chunks'
+import { Route as ApiAdminInvoicesRouteImport } from './routes/api/admin/invoices'
+import { Route as ApiAdminCreditsLedgerRouteImport } from './routes/api/admin/credits-ledger'
+import { Route as ApiAdminChatSessionsRouteImport } from './routes/api/admin/chat-sessions'
+import { Route as ApiAdminChatMessagesRouteImport } from './routes/api/admin/chat-messages'
+import { Route as ApiAdminAuthUsersRouteImport } from './routes/api/admin/auth-users'
+import { Route as ApiAdminAnswersRouteImport } from './routes/api/admin/answers'
+import { Route as ApiAdminUsersActionsRouteImport } from './routes/api/admin/users/actions'
+import { Route as ApiAdminUsersUserIdRouteImport } from './routes/api/admin/users/$userId'
+import { Route as ApiAdminSubscriptionsUserSubscriptionsRouteImport } from './routes/api/admin/subscriptions/user-subscriptions'
+import { Route as ApiAdminSubscriptionsPlansRouteImport } from './routes/api/admin/subscriptions/plans'
+import { Route as ApiAdminStudentProfilesUserIdRouteImport } from './routes/api/admin/student-profiles/$userId'
+import { Route as ApiAdminSessionGoogleRouteImport } from './routes/api/admin/session/google'
+import { Route as ApiAdminPromptTemplatesPromptIdRouteImport } from './routes/api/admin/prompt-templates/$promptId'
+import { Route as ApiAdminPaymentsSubmissionIdRouteImport } from './routes/api/admin/payments/$submissionId'
+import { Route as ApiAdminNotebooksNotebookIdRouteImport } from './routes/api/admin/notebooks/$notebookId'
+import { Route as ApiAdminKnowledgeDocumentsUploadRouteImport } from './routes/api/admin/knowledge-documents/upload'
+import { Route as ApiAdminKnowledgeDocumentsActionsRouteImport } from './routes/api/admin/knowledge-documents/actions'
+import { Route as ApiAdminKnowledgeDocumentsDocumentIdRouteImport } from './routes/api/admin/knowledge-documents/$documentId'
+import { Route as ApiAdminAnswersActionsRouteImport } from './routes/api/admin/answers/actions'
+import { Route as ApiAdminAnswersMessageIdRouteImport } from './routes/api/admin/answers/$messageId'
+import { Route as ApiAdminUsersUserIdCreditsRouteImport } from './routes/api/admin/users/$userId/credits'
+import { Route as ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRouteImport } from './routes/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+import { Route as ApiAdminSubscriptionsPlansPlanIdRouteImport } from './routes/api/admin/subscriptions/plans/$planId'
+import { Route as ApiAdminKnowledgeDocumentsDocumentIdSourceRouteImport } from './routes/api/admin/knowledge-documents/$documentId/source'
+import { Route as ApiAdminKnowledgeDocumentsDocumentIdProcessRouteImport } from './routes/api/admin/knowledge-documents/$documentId/process'
 
+const NotebooksRoute = NotebooksRouteImport.update({
+  id: '/notebooks',
+  path: '/notebooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminKnowledgeRoute = AdminKnowledgeRouteImport.update({
+  id: '/admin/knowledge',
+  path: '/admin/knowledge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminUsersRoute = ApiAdminUsersRouteImport.update({
+  id: '/api/admin/users',
+  path: '/api/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminStudentProfilesRoute = ApiAdminStudentProfilesRouteImport.update({
+  id: '/api/admin/student-profiles',
+  path: '/api/admin/student-profiles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminSessionRoute = ApiAdminSessionRouteImport.update({
+  id: '/api/admin/session',
+  path: '/api/admin/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminRevisionNotesRoute = ApiAdminRevisionNotesRouteImport.update({
+  id: '/api/admin/revision-notes',
+  path: '/api/admin/revision-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminPromptTemplatesRoute = ApiAdminPromptTemplatesRouteImport.update({
+  id: '/api/admin/prompt-templates',
+  path: '/api/admin/prompt-templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminPaymentsRoute = ApiAdminPaymentsRouteImport.update({
+  id: '/api/admin/payments',
+  path: '/api/admin/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminNotebooksRoute = ApiAdminNotebooksRouteImport.update({
+  id: '/api/admin/notebooks',
+  path: '/api/admin/notebooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminNoteRevisionLogsRoute =
+  ApiAdminNoteRevisionLogsRouteImport.update({
+    id: '/api/admin/note-revision-logs',
+    path: '/api/admin/note-revision-logs',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminKnowledgeDocumentsRoute =
+  ApiAdminKnowledgeDocumentsRouteImport.update({
+    id: '/api/admin/knowledge-documents',
+    path: '/api/admin/knowledge-documents',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminKnowledgeChunksRoute = ApiAdminKnowledgeChunksRouteImport.update({
+  id: '/api/admin/knowledge-chunks',
+  path: '/api/admin/knowledge-chunks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminInvoicesRoute = ApiAdminInvoicesRouteImport.update({
+  id: '/api/admin/invoices',
+  path: '/api/admin/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminCreditsLedgerRoute = ApiAdminCreditsLedgerRouteImport.update({
+  id: '/api/admin/credits-ledger',
+  path: '/api/admin/credits-ledger',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminChatSessionsRoute = ApiAdminChatSessionsRouteImport.update({
+  id: '/api/admin/chat-sessions',
+  path: '/api/admin/chat-sessions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminChatMessagesRoute = ApiAdminChatMessagesRouteImport.update({
+  id: '/api/admin/chat-messages',
+  path: '/api/admin/chat-messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminAuthUsersRoute = ApiAdminAuthUsersRouteImport.update({
+  id: '/api/admin/auth-users',
+  path: '/api/admin/auth-users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminAnswersRoute = ApiAdminAnswersRouteImport.update({
+  id: '/api/admin/answers',
+  path: '/api/admin/answers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminUsersActionsRoute = ApiAdminUsersActionsRouteImport.update({
+  id: '/actions',
+  path: '/actions',
+  getParentRoute: () => ApiAdminUsersRoute,
+} as any)
+const ApiAdminUsersUserIdRoute = ApiAdminUsersUserIdRouteImport.update({
+  id: '/$userId',
+  path: '/$userId',
+  getParentRoute: () => ApiAdminUsersRoute,
+} as any)
+const ApiAdminSubscriptionsUserSubscriptionsRoute =
+  ApiAdminSubscriptionsUserSubscriptionsRouteImport.update({
+    id: '/api/admin/subscriptions/user-subscriptions',
+    path: '/api/admin/subscriptions/user-subscriptions',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminSubscriptionsPlansRoute =
+  ApiAdminSubscriptionsPlansRouteImport.update({
+    id: '/api/admin/subscriptions/plans',
+    path: '/api/admin/subscriptions/plans',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminStudentProfilesUserIdRoute =
+  ApiAdminStudentProfilesUserIdRouteImport.update({
+    id: '/$userId',
+    path: '/$userId',
+    getParentRoute: () => ApiAdminStudentProfilesRoute,
+  } as any)
+const ApiAdminSessionGoogleRoute = ApiAdminSessionGoogleRouteImport.update({
+  id: '/google',
+  path: '/google',
+  getParentRoute: () => ApiAdminSessionRoute,
+} as any)
+const ApiAdminPromptTemplatesPromptIdRoute =
+  ApiAdminPromptTemplatesPromptIdRouteImport.update({
+    id: '/$promptId',
+    path: '/$promptId',
+    getParentRoute: () => ApiAdminPromptTemplatesRoute,
+  } as any)
+const ApiAdminPaymentsSubmissionIdRoute =
+  ApiAdminPaymentsSubmissionIdRouteImport.update({
+    id: '/$submissionId',
+    path: '/$submissionId',
+    getParentRoute: () => ApiAdminPaymentsRoute,
+  } as any)
+const ApiAdminNotebooksNotebookIdRoute =
+  ApiAdminNotebooksNotebookIdRouteImport.update({
+    id: '/$notebookId',
+    path: '/$notebookId',
+    getParentRoute: () => ApiAdminNotebooksRoute,
+  } as any)
+const ApiAdminKnowledgeDocumentsUploadRoute =
+  ApiAdminKnowledgeDocumentsUploadRouteImport.update({
+    id: '/upload',
+    path: '/upload',
+    getParentRoute: () => ApiAdminKnowledgeDocumentsRoute,
+  } as any)
+const ApiAdminKnowledgeDocumentsActionsRoute =
+  ApiAdminKnowledgeDocumentsActionsRouteImport.update({
+    id: '/actions',
+    path: '/actions',
+    getParentRoute: () => ApiAdminKnowledgeDocumentsRoute,
+  } as any)
+const ApiAdminKnowledgeDocumentsDocumentIdRoute =
+  ApiAdminKnowledgeDocumentsDocumentIdRouteImport.update({
+    id: '/$documentId',
+    path: '/$documentId',
+    getParentRoute: () => ApiAdminKnowledgeDocumentsRoute,
+  } as any)
+const ApiAdminAnswersActionsRoute = ApiAdminAnswersActionsRouteImport.update({
+  id: '/actions',
+  path: '/actions',
+  getParentRoute: () => ApiAdminAnswersRoute,
+} as any)
+const ApiAdminAnswersMessageIdRoute =
+  ApiAdminAnswersMessageIdRouteImport.update({
+    id: '/$messageId',
+    path: '/$messageId',
+    getParentRoute: () => ApiAdminAnswersRoute,
+  } as any)
+const ApiAdminUsersUserIdCreditsRoute =
+  ApiAdminUsersUserIdCreditsRouteImport.update({
+    id: '/credits',
+    path: '/credits',
+    getParentRoute: () => ApiAdminUsersUserIdRoute,
+  } as any)
+const ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute =
+  ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRouteImport.update({
+    id: '/$subscriptionId',
+    path: '/$subscriptionId',
+    getParentRoute: () => ApiAdminSubscriptionsUserSubscriptionsRoute,
+  } as any)
+const ApiAdminSubscriptionsPlansPlanIdRoute =
+  ApiAdminSubscriptionsPlansPlanIdRouteImport.update({
+    id: '/$planId',
+    path: '/$planId',
+    getParentRoute: () => ApiAdminSubscriptionsPlansRoute,
+  } as any)
+const ApiAdminKnowledgeDocumentsDocumentIdSourceRoute =
+  ApiAdminKnowledgeDocumentsDocumentIdSourceRouteImport.update({
+    id: '/source',
+    path: '/source',
+    getParentRoute: () => ApiAdminKnowledgeDocumentsDocumentIdRoute,
+  } as any)
+const ApiAdminKnowledgeDocumentsDocumentIdProcessRoute =
+  ApiAdminKnowledgeDocumentsDocumentIdProcessRouteImport.update({
+    id: '/process',
+    path: '/process',
+    getParentRoute: () => ApiAdminKnowledgeDocumentsDocumentIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/notebooks': typeof NotebooksRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/answers': typeof ApiAdminAnswersRouteWithChildren
+  '/api/admin/auth-users': typeof ApiAdminAuthUsersRoute
+  '/api/admin/chat-messages': typeof ApiAdminChatMessagesRoute
+  '/api/admin/chat-sessions': typeof ApiAdminChatSessionsRoute
+  '/api/admin/credits-ledger': typeof ApiAdminCreditsLedgerRoute
+  '/api/admin/invoices': typeof ApiAdminInvoicesRoute
+  '/api/admin/knowledge-chunks': typeof ApiAdminKnowledgeChunksRoute
+  '/api/admin/knowledge-documents': typeof ApiAdminKnowledgeDocumentsRouteWithChildren
+  '/api/admin/note-revision-logs': typeof ApiAdminNoteRevisionLogsRoute
+  '/api/admin/notebooks': typeof ApiAdminNotebooksRouteWithChildren
+  '/api/admin/payments': typeof ApiAdminPaymentsRouteWithChildren
+  '/api/admin/prompt-templates': typeof ApiAdminPromptTemplatesRouteWithChildren
+  '/api/admin/revision-notes': typeof ApiAdminRevisionNotesRoute
+  '/api/admin/session': typeof ApiAdminSessionRouteWithChildren
+  '/api/admin/student-profiles': typeof ApiAdminStudentProfilesRouteWithChildren
+  '/api/admin/users': typeof ApiAdminUsersRouteWithChildren
+  '/api/admin/answers/$messageId': typeof ApiAdminAnswersMessageIdRoute
+  '/api/admin/answers/actions': typeof ApiAdminAnswersActionsRoute
+  '/api/admin/knowledge-documents/$documentId': typeof ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren
+  '/api/admin/knowledge-documents/actions': typeof ApiAdminKnowledgeDocumentsActionsRoute
+  '/api/admin/knowledge-documents/upload': typeof ApiAdminKnowledgeDocumentsUploadRoute
+  '/api/admin/notebooks/$notebookId': typeof ApiAdminNotebooksNotebookIdRoute
+  '/api/admin/payments/$submissionId': typeof ApiAdminPaymentsSubmissionIdRoute
+  '/api/admin/prompt-templates/$promptId': typeof ApiAdminPromptTemplatesPromptIdRoute
+  '/api/admin/session/google': typeof ApiAdminSessionGoogleRoute
+  '/api/admin/student-profiles/$userId': typeof ApiAdminStudentProfilesUserIdRoute
+  '/api/admin/subscriptions/plans': typeof ApiAdminSubscriptionsPlansRouteWithChildren
+  '/api/admin/subscriptions/user-subscriptions': typeof ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren
+  '/api/admin/users/$userId': typeof ApiAdminUsersUserIdRouteWithChildren
+  '/api/admin/users/actions': typeof ApiAdminUsersActionsRoute
+  '/api/admin/knowledge-documents/$documentId/process': typeof ApiAdminKnowledgeDocumentsDocumentIdProcessRoute
+  '/api/admin/knowledge-documents/$documentId/source': typeof ApiAdminKnowledgeDocumentsDocumentIdSourceRoute
+  '/api/admin/subscriptions/plans/$planId': typeof ApiAdminSubscriptionsPlansPlanIdRoute
+  '/api/admin/subscriptions/user-subscriptions/$subscriptionId': typeof ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute
+  '/api/admin/users/$userId/credits': typeof ApiAdminUsersUserIdCreditsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/notebooks': typeof NotebooksRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/answers': typeof ApiAdminAnswersRouteWithChildren
+  '/api/admin/auth-users': typeof ApiAdminAuthUsersRoute
+  '/api/admin/chat-messages': typeof ApiAdminChatMessagesRoute
+  '/api/admin/chat-sessions': typeof ApiAdminChatSessionsRoute
+  '/api/admin/credits-ledger': typeof ApiAdminCreditsLedgerRoute
+  '/api/admin/invoices': typeof ApiAdminInvoicesRoute
+  '/api/admin/knowledge-chunks': typeof ApiAdminKnowledgeChunksRoute
+  '/api/admin/knowledge-documents': typeof ApiAdminKnowledgeDocumentsRouteWithChildren
+  '/api/admin/note-revision-logs': typeof ApiAdminNoteRevisionLogsRoute
+  '/api/admin/notebooks': typeof ApiAdminNotebooksRouteWithChildren
+  '/api/admin/payments': typeof ApiAdminPaymentsRouteWithChildren
+  '/api/admin/prompt-templates': typeof ApiAdminPromptTemplatesRouteWithChildren
+  '/api/admin/revision-notes': typeof ApiAdminRevisionNotesRoute
+  '/api/admin/session': typeof ApiAdminSessionRouteWithChildren
+  '/api/admin/student-profiles': typeof ApiAdminStudentProfilesRouteWithChildren
+  '/api/admin/users': typeof ApiAdminUsersRouteWithChildren
+  '/api/admin/answers/$messageId': typeof ApiAdminAnswersMessageIdRoute
+  '/api/admin/answers/actions': typeof ApiAdminAnswersActionsRoute
+  '/api/admin/knowledge-documents/$documentId': typeof ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren
+  '/api/admin/knowledge-documents/actions': typeof ApiAdminKnowledgeDocumentsActionsRoute
+  '/api/admin/knowledge-documents/upload': typeof ApiAdminKnowledgeDocumentsUploadRoute
+  '/api/admin/notebooks/$notebookId': typeof ApiAdminNotebooksNotebookIdRoute
+  '/api/admin/payments/$submissionId': typeof ApiAdminPaymentsSubmissionIdRoute
+  '/api/admin/prompt-templates/$promptId': typeof ApiAdminPromptTemplatesPromptIdRoute
+  '/api/admin/session/google': typeof ApiAdminSessionGoogleRoute
+  '/api/admin/student-profiles/$userId': typeof ApiAdminStudentProfilesUserIdRoute
+  '/api/admin/subscriptions/plans': typeof ApiAdminSubscriptionsPlansRouteWithChildren
+  '/api/admin/subscriptions/user-subscriptions': typeof ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren
+  '/api/admin/users/$userId': typeof ApiAdminUsersUserIdRouteWithChildren
+  '/api/admin/users/actions': typeof ApiAdminUsersActionsRoute
+  '/api/admin/knowledge-documents/$documentId/process': typeof ApiAdminKnowledgeDocumentsDocumentIdProcessRoute
+  '/api/admin/knowledge-documents/$documentId/source': typeof ApiAdminKnowledgeDocumentsDocumentIdSourceRoute
+  '/api/admin/subscriptions/plans/$planId': typeof ApiAdminSubscriptionsPlansPlanIdRoute
+  '/api/admin/subscriptions/user-subscriptions/$subscriptionId': typeof ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute
+  '/api/admin/users/$userId/credits': typeof ApiAdminUsersUserIdCreditsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/notebooks': typeof NotebooksRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/answers': typeof ApiAdminAnswersRouteWithChildren
+  '/api/admin/auth-users': typeof ApiAdminAuthUsersRoute
+  '/api/admin/chat-messages': typeof ApiAdminChatMessagesRoute
+  '/api/admin/chat-sessions': typeof ApiAdminChatSessionsRoute
+  '/api/admin/credits-ledger': typeof ApiAdminCreditsLedgerRoute
+  '/api/admin/invoices': typeof ApiAdminInvoicesRoute
+  '/api/admin/knowledge-chunks': typeof ApiAdminKnowledgeChunksRoute
+  '/api/admin/knowledge-documents': typeof ApiAdminKnowledgeDocumentsRouteWithChildren
+  '/api/admin/note-revision-logs': typeof ApiAdminNoteRevisionLogsRoute
+  '/api/admin/notebooks': typeof ApiAdminNotebooksRouteWithChildren
+  '/api/admin/payments': typeof ApiAdminPaymentsRouteWithChildren
+  '/api/admin/prompt-templates': typeof ApiAdminPromptTemplatesRouteWithChildren
+  '/api/admin/revision-notes': typeof ApiAdminRevisionNotesRoute
+  '/api/admin/session': typeof ApiAdminSessionRouteWithChildren
+  '/api/admin/student-profiles': typeof ApiAdminStudentProfilesRouteWithChildren
+  '/api/admin/users': typeof ApiAdminUsersRouteWithChildren
+  '/api/admin/answers/$messageId': typeof ApiAdminAnswersMessageIdRoute
+  '/api/admin/answers/actions': typeof ApiAdminAnswersActionsRoute
+  '/api/admin/knowledge-documents/$documentId': typeof ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren
+  '/api/admin/knowledge-documents/actions': typeof ApiAdminKnowledgeDocumentsActionsRoute
+  '/api/admin/knowledge-documents/upload': typeof ApiAdminKnowledgeDocumentsUploadRoute
+  '/api/admin/notebooks/$notebookId': typeof ApiAdminNotebooksNotebookIdRoute
+  '/api/admin/payments/$submissionId': typeof ApiAdminPaymentsSubmissionIdRoute
+  '/api/admin/prompt-templates/$promptId': typeof ApiAdminPromptTemplatesPromptIdRoute
+  '/api/admin/session/google': typeof ApiAdminSessionGoogleRoute
+  '/api/admin/student-profiles/$userId': typeof ApiAdminStudentProfilesUserIdRoute
+  '/api/admin/subscriptions/plans': typeof ApiAdminSubscriptionsPlansRouteWithChildren
+  '/api/admin/subscriptions/user-subscriptions': typeof ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren
+  '/api/admin/users/$userId': typeof ApiAdminUsersUserIdRouteWithChildren
+  '/api/admin/users/actions': typeof ApiAdminUsersActionsRoute
+  '/api/admin/knowledge-documents/$documentId/process': typeof ApiAdminKnowledgeDocumentsDocumentIdProcessRoute
+  '/api/admin/knowledge-documents/$documentId/source': typeof ApiAdminKnowledgeDocumentsDocumentIdSourceRoute
+  '/api/admin/subscriptions/plans/$planId': typeof ApiAdminSubscriptionsPlansPlanIdRoute
+  '/api/admin/subscriptions/user-subscriptions/$subscriptionId': typeof ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute
+  '/api/admin/users/$userId/credits': typeof ApiAdminUsersUserIdCreditsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/notebooks'
+    | '/admin/knowledge'
+    | '/auth/callback'
+    | '/api/admin/answers'
+    | '/api/admin/auth-users'
+    | '/api/admin/chat-messages'
+    | '/api/admin/chat-sessions'
+    | '/api/admin/credits-ledger'
+    | '/api/admin/invoices'
+    | '/api/admin/knowledge-chunks'
+    | '/api/admin/knowledge-documents'
+    | '/api/admin/note-revision-logs'
+    | '/api/admin/notebooks'
+    | '/api/admin/payments'
+    | '/api/admin/prompt-templates'
+    | '/api/admin/revision-notes'
+    | '/api/admin/session'
+    | '/api/admin/student-profiles'
+    | '/api/admin/users'
+    | '/api/admin/answers/$messageId'
+    | '/api/admin/answers/actions'
+    | '/api/admin/knowledge-documents/$documentId'
+    | '/api/admin/knowledge-documents/actions'
+    | '/api/admin/knowledge-documents/upload'
+    | '/api/admin/notebooks/$notebookId'
+    | '/api/admin/payments/$submissionId'
+    | '/api/admin/prompt-templates/$promptId'
+    | '/api/admin/session/google'
+    | '/api/admin/student-profiles/$userId'
+    | '/api/admin/subscriptions/plans'
+    | '/api/admin/subscriptions/user-subscriptions'
+    | '/api/admin/users/$userId'
+    | '/api/admin/users/actions'
+    | '/api/admin/knowledge-documents/$documentId/process'
+    | '/api/admin/knowledge-documents/$documentId/source'
+    | '/api/admin/subscriptions/plans/$planId'
+    | '/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+    | '/api/admin/users/$userId/credits'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/notebooks'
+    | '/admin/knowledge'
+    | '/auth/callback'
+    | '/api/admin/answers'
+    | '/api/admin/auth-users'
+    | '/api/admin/chat-messages'
+    | '/api/admin/chat-sessions'
+    | '/api/admin/credits-ledger'
+    | '/api/admin/invoices'
+    | '/api/admin/knowledge-chunks'
+    | '/api/admin/knowledge-documents'
+    | '/api/admin/note-revision-logs'
+    | '/api/admin/notebooks'
+    | '/api/admin/payments'
+    | '/api/admin/prompt-templates'
+    | '/api/admin/revision-notes'
+    | '/api/admin/session'
+    | '/api/admin/student-profiles'
+    | '/api/admin/users'
+    | '/api/admin/answers/$messageId'
+    | '/api/admin/answers/actions'
+    | '/api/admin/knowledge-documents/$documentId'
+    | '/api/admin/knowledge-documents/actions'
+    | '/api/admin/knowledge-documents/upload'
+    | '/api/admin/notebooks/$notebookId'
+    | '/api/admin/payments/$submissionId'
+    | '/api/admin/prompt-templates/$promptId'
+    | '/api/admin/session/google'
+    | '/api/admin/student-profiles/$userId'
+    | '/api/admin/subscriptions/plans'
+    | '/api/admin/subscriptions/user-subscriptions'
+    | '/api/admin/users/$userId'
+    | '/api/admin/users/actions'
+    | '/api/admin/knowledge-documents/$documentId/process'
+    | '/api/admin/knowledge-documents/$documentId/source'
+    | '/api/admin/subscriptions/plans/$planId'
+    | '/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+    | '/api/admin/users/$userId/credits'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/notebooks'
+    | '/admin/knowledge'
+    | '/auth/callback'
+    | '/api/admin/answers'
+    | '/api/admin/auth-users'
+    | '/api/admin/chat-messages'
+    | '/api/admin/chat-sessions'
+    | '/api/admin/credits-ledger'
+    | '/api/admin/invoices'
+    | '/api/admin/knowledge-chunks'
+    | '/api/admin/knowledge-documents'
+    | '/api/admin/note-revision-logs'
+    | '/api/admin/notebooks'
+    | '/api/admin/payments'
+    | '/api/admin/prompt-templates'
+    | '/api/admin/revision-notes'
+    | '/api/admin/session'
+    | '/api/admin/student-profiles'
+    | '/api/admin/users'
+    | '/api/admin/answers/$messageId'
+    | '/api/admin/answers/actions'
+    | '/api/admin/knowledge-documents/$documentId'
+    | '/api/admin/knowledge-documents/actions'
+    | '/api/admin/knowledge-documents/upload'
+    | '/api/admin/notebooks/$notebookId'
+    | '/api/admin/payments/$submissionId'
+    | '/api/admin/prompt-templates/$promptId'
+    | '/api/admin/session/google'
+    | '/api/admin/student-profiles/$userId'
+    | '/api/admin/subscriptions/plans'
+    | '/api/admin/subscriptions/user-subscriptions'
+    | '/api/admin/users/$userId'
+    | '/api/admin/users/actions'
+    | '/api/admin/knowledge-documents/$documentId/process'
+    | '/api/admin/knowledge-documents/$documentId/source'
+    | '/api/admin/subscriptions/plans/$planId'
+    | '/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+    | '/api/admin/users/$userId/credits'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  NotebooksRoute: typeof NotebooksRoute
+  AdminKnowledgeRoute: typeof AdminKnowledgeRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
+  ApiAdminAnswersRoute: typeof ApiAdminAnswersRouteWithChildren
+  ApiAdminAuthUsersRoute: typeof ApiAdminAuthUsersRoute
+  ApiAdminChatMessagesRoute: typeof ApiAdminChatMessagesRoute
+  ApiAdminChatSessionsRoute: typeof ApiAdminChatSessionsRoute
+  ApiAdminCreditsLedgerRoute: typeof ApiAdminCreditsLedgerRoute
+  ApiAdminInvoicesRoute: typeof ApiAdminInvoicesRoute
+  ApiAdminKnowledgeChunksRoute: typeof ApiAdminKnowledgeChunksRoute
+  ApiAdminKnowledgeDocumentsRoute: typeof ApiAdminKnowledgeDocumentsRouteWithChildren
+  ApiAdminNoteRevisionLogsRoute: typeof ApiAdminNoteRevisionLogsRoute
+  ApiAdminNotebooksRoute: typeof ApiAdminNotebooksRouteWithChildren
+  ApiAdminPaymentsRoute: typeof ApiAdminPaymentsRouteWithChildren
+  ApiAdminPromptTemplatesRoute: typeof ApiAdminPromptTemplatesRouteWithChildren
+  ApiAdminRevisionNotesRoute: typeof ApiAdminRevisionNotesRoute
+  ApiAdminSessionRoute: typeof ApiAdminSessionRouteWithChildren
+  ApiAdminStudentProfilesRoute: typeof ApiAdminStudentProfilesRouteWithChildren
+  ApiAdminUsersRoute: typeof ApiAdminUsersRouteWithChildren
+  ApiAdminSubscriptionsPlansRoute: typeof ApiAdminSubscriptionsPlansRouteWithChildren
+  ApiAdminSubscriptionsUserSubscriptionsRoute: typeof ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/notebooks': {
+      id: '/notebooks'
+      path: '/notebooks'
+      fullPath: '/notebooks'
+      preLoaderRoute: typeof NotebooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +573,474 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/knowledge': {
+      id: '/admin/knowledge'
+      path: '/admin/knowledge'
+      fullPath: '/admin/knowledge'
+      preLoaderRoute: typeof AdminKnowledgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/users': {
+      id: '/api/admin/users'
+      path: '/api/admin/users'
+      fullPath: '/api/admin/users'
+      preLoaderRoute: typeof ApiAdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/student-profiles': {
+      id: '/api/admin/student-profiles'
+      path: '/api/admin/student-profiles'
+      fullPath: '/api/admin/student-profiles'
+      preLoaderRoute: typeof ApiAdminStudentProfilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/session': {
+      id: '/api/admin/session'
+      path: '/api/admin/session'
+      fullPath: '/api/admin/session'
+      preLoaderRoute: typeof ApiAdminSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/revision-notes': {
+      id: '/api/admin/revision-notes'
+      path: '/api/admin/revision-notes'
+      fullPath: '/api/admin/revision-notes'
+      preLoaderRoute: typeof ApiAdminRevisionNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/prompt-templates': {
+      id: '/api/admin/prompt-templates'
+      path: '/api/admin/prompt-templates'
+      fullPath: '/api/admin/prompt-templates'
+      preLoaderRoute: typeof ApiAdminPromptTemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/payments': {
+      id: '/api/admin/payments'
+      path: '/api/admin/payments'
+      fullPath: '/api/admin/payments'
+      preLoaderRoute: typeof ApiAdminPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/notebooks': {
+      id: '/api/admin/notebooks'
+      path: '/api/admin/notebooks'
+      fullPath: '/api/admin/notebooks'
+      preLoaderRoute: typeof ApiAdminNotebooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/note-revision-logs': {
+      id: '/api/admin/note-revision-logs'
+      path: '/api/admin/note-revision-logs'
+      fullPath: '/api/admin/note-revision-logs'
+      preLoaderRoute: typeof ApiAdminNoteRevisionLogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/knowledge-documents': {
+      id: '/api/admin/knowledge-documents'
+      path: '/api/admin/knowledge-documents'
+      fullPath: '/api/admin/knowledge-documents'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/knowledge-chunks': {
+      id: '/api/admin/knowledge-chunks'
+      path: '/api/admin/knowledge-chunks'
+      fullPath: '/api/admin/knowledge-chunks'
+      preLoaderRoute: typeof ApiAdminKnowledgeChunksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/invoices': {
+      id: '/api/admin/invoices'
+      path: '/api/admin/invoices'
+      fullPath: '/api/admin/invoices'
+      preLoaderRoute: typeof ApiAdminInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/credits-ledger': {
+      id: '/api/admin/credits-ledger'
+      path: '/api/admin/credits-ledger'
+      fullPath: '/api/admin/credits-ledger'
+      preLoaderRoute: typeof ApiAdminCreditsLedgerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/chat-sessions': {
+      id: '/api/admin/chat-sessions'
+      path: '/api/admin/chat-sessions'
+      fullPath: '/api/admin/chat-sessions'
+      preLoaderRoute: typeof ApiAdminChatSessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/chat-messages': {
+      id: '/api/admin/chat-messages'
+      path: '/api/admin/chat-messages'
+      fullPath: '/api/admin/chat-messages'
+      preLoaderRoute: typeof ApiAdminChatMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/auth-users': {
+      id: '/api/admin/auth-users'
+      path: '/api/admin/auth-users'
+      fullPath: '/api/admin/auth-users'
+      preLoaderRoute: typeof ApiAdminAuthUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/answers': {
+      id: '/api/admin/answers'
+      path: '/api/admin/answers'
+      fullPath: '/api/admin/answers'
+      preLoaderRoute: typeof ApiAdminAnswersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/users/actions': {
+      id: '/api/admin/users/actions'
+      path: '/actions'
+      fullPath: '/api/admin/users/actions'
+      preLoaderRoute: typeof ApiAdminUsersActionsRouteImport
+      parentRoute: typeof ApiAdminUsersRoute
+    }
+    '/api/admin/users/$userId': {
+      id: '/api/admin/users/$userId'
+      path: '/$userId'
+      fullPath: '/api/admin/users/$userId'
+      preLoaderRoute: typeof ApiAdminUsersUserIdRouteImport
+      parentRoute: typeof ApiAdminUsersRoute
+    }
+    '/api/admin/subscriptions/user-subscriptions': {
+      id: '/api/admin/subscriptions/user-subscriptions'
+      path: '/api/admin/subscriptions/user-subscriptions'
+      fullPath: '/api/admin/subscriptions/user-subscriptions'
+      preLoaderRoute: typeof ApiAdminSubscriptionsUserSubscriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/subscriptions/plans': {
+      id: '/api/admin/subscriptions/plans'
+      path: '/api/admin/subscriptions/plans'
+      fullPath: '/api/admin/subscriptions/plans'
+      preLoaderRoute: typeof ApiAdminSubscriptionsPlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/student-profiles/$userId': {
+      id: '/api/admin/student-profiles/$userId'
+      path: '/$userId'
+      fullPath: '/api/admin/student-profiles/$userId'
+      preLoaderRoute: typeof ApiAdminStudentProfilesUserIdRouteImport
+      parentRoute: typeof ApiAdminStudentProfilesRoute
+    }
+    '/api/admin/session/google': {
+      id: '/api/admin/session/google'
+      path: '/google'
+      fullPath: '/api/admin/session/google'
+      preLoaderRoute: typeof ApiAdminSessionGoogleRouteImport
+      parentRoute: typeof ApiAdminSessionRoute
+    }
+    '/api/admin/prompt-templates/$promptId': {
+      id: '/api/admin/prompt-templates/$promptId'
+      path: '/$promptId'
+      fullPath: '/api/admin/prompt-templates/$promptId'
+      preLoaderRoute: typeof ApiAdminPromptTemplatesPromptIdRouteImport
+      parentRoute: typeof ApiAdminPromptTemplatesRoute
+    }
+    '/api/admin/payments/$submissionId': {
+      id: '/api/admin/payments/$submissionId'
+      path: '/$submissionId'
+      fullPath: '/api/admin/payments/$submissionId'
+      preLoaderRoute: typeof ApiAdminPaymentsSubmissionIdRouteImport
+      parentRoute: typeof ApiAdminPaymentsRoute
+    }
+    '/api/admin/notebooks/$notebookId': {
+      id: '/api/admin/notebooks/$notebookId'
+      path: '/$notebookId'
+      fullPath: '/api/admin/notebooks/$notebookId'
+      preLoaderRoute: typeof ApiAdminNotebooksNotebookIdRouteImport
+      parentRoute: typeof ApiAdminNotebooksRoute
+    }
+    '/api/admin/knowledge-documents/upload': {
+      id: '/api/admin/knowledge-documents/upload'
+      path: '/upload'
+      fullPath: '/api/admin/knowledge-documents/upload'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsUploadRouteImport
+      parentRoute: typeof ApiAdminKnowledgeDocumentsRoute
+    }
+    '/api/admin/knowledge-documents/actions': {
+      id: '/api/admin/knowledge-documents/actions'
+      path: '/actions'
+      fullPath: '/api/admin/knowledge-documents/actions'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsActionsRouteImport
+      parentRoute: typeof ApiAdminKnowledgeDocumentsRoute
+    }
+    '/api/admin/knowledge-documents/$documentId': {
+      id: '/api/admin/knowledge-documents/$documentId'
+      path: '/$documentId'
+      fullPath: '/api/admin/knowledge-documents/$documentId'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdRouteImport
+      parentRoute: typeof ApiAdminKnowledgeDocumentsRoute
+    }
+    '/api/admin/answers/actions': {
+      id: '/api/admin/answers/actions'
+      path: '/actions'
+      fullPath: '/api/admin/answers/actions'
+      preLoaderRoute: typeof ApiAdminAnswersActionsRouteImport
+      parentRoute: typeof ApiAdminAnswersRoute
+    }
+    '/api/admin/answers/$messageId': {
+      id: '/api/admin/answers/$messageId'
+      path: '/$messageId'
+      fullPath: '/api/admin/answers/$messageId'
+      preLoaderRoute: typeof ApiAdminAnswersMessageIdRouteImport
+      parentRoute: typeof ApiAdminAnswersRoute
+    }
+    '/api/admin/users/$userId/credits': {
+      id: '/api/admin/users/$userId/credits'
+      path: '/credits'
+      fullPath: '/api/admin/users/$userId/credits'
+      preLoaderRoute: typeof ApiAdminUsersUserIdCreditsRouteImport
+      parentRoute: typeof ApiAdminUsersUserIdRoute
+    }
+    '/api/admin/subscriptions/user-subscriptions/$subscriptionId': {
+      id: '/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+      path: '/$subscriptionId'
+      fullPath: '/api/admin/subscriptions/user-subscriptions/$subscriptionId'
+      preLoaderRoute: typeof ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRouteImport
+      parentRoute: typeof ApiAdminSubscriptionsUserSubscriptionsRoute
+    }
+    '/api/admin/subscriptions/plans/$planId': {
+      id: '/api/admin/subscriptions/plans/$planId'
+      path: '/$planId'
+      fullPath: '/api/admin/subscriptions/plans/$planId'
+      preLoaderRoute: typeof ApiAdminSubscriptionsPlansPlanIdRouteImport
+      parentRoute: typeof ApiAdminSubscriptionsPlansRoute
+    }
+    '/api/admin/knowledge-documents/$documentId/source': {
+      id: '/api/admin/knowledge-documents/$documentId/source'
+      path: '/source'
+      fullPath: '/api/admin/knowledge-documents/$documentId/source'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdSourceRouteImport
+      parentRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdRoute
+    }
+    '/api/admin/knowledge-documents/$documentId/process': {
+      id: '/api/admin/knowledge-documents/$documentId/process'
+      path: '/process'
+      fullPath: '/api/admin/knowledge-documents/$documentId/process'
+      preLoaderRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdProcessRouteImport
+      parentRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdRoute
+    }
   }
 }
 
+interface ApiAdminAnswersRouteChildren {
+  ApiAdminAnswersMessageIdRoute: typeof ApiAdminAnswersMessageIdRoute
+  ApiAdminAnswersActionsRoute: typeof ApiAdminAnswersActionsRoute
+}
+
+const ApiAdminAnswersRouteChildren: ApiAdminAnswersRouteChildren = {
+  ApiAdminAnswersMessageIdRoute: ApiAdminAnswersMessageIdRoute,
+  ApiAdminAnswersActionsRoute: ApiAdminAnswersActionsRoute,
+}
+
+const ApiAdminAnswersRouteWithChildren = ApiAdminAnswersRoute._addFileChildren(
+  ApiAdminAnswersRouteChildren,
+)
+
+interface ApiAdminKnowledgeDocumentsDocumentIdRouteChildren {
+  ApiAdminKnowledgeDocumentsDocumentIdProcessRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdProcessRoute
+  ApiAdminKnowledgeDocumentsDocumentIdSourceRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdSourceRoute
+}
+
+const ApiAdminKnowledgeDocumentsDocumentIdRouteChildren: ApiAdminKnowledgeDocumentsDocumentIdRouteChildren =
+  {
+    ApiAdminKnowledgeDocumentsDocumentIdProcessRoute:
+      ApiAdminKnowledgeDocumentsDocumentIdProcessRoute,
+    ApiAdminKnowledgeDocumentsDocumentIdSourceRoute:
+      ApiAdminKnowledgeDocumentsDocumentIdSourceRoute,
+  }
+
+const ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren =
+  ApiAdminKnowledgeDocumentsDocumentIdRoute._addFileChildren(
+    ApiAdminKnowledgeDocumentsDocumentIdRouteChildren,
+  )
+
+interface ApiAdminKnowledgeDocumentsRouteChildren {
+  ApiAdminKnowledgeDocumentsDocumentIdRoute: typeof ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren
+  ApiAdminKnowledgeDocumentsActionsRoute: typeof ApiAdminKnowledgeDocumentsActionsRoute
+  ApiAdminKnowledgeDocumentsUploadRoute: typeof ApiAdminKnowledgeDocumentsUploadRoute
+}
+
+const ApiAdminKnowledgeDocumentsRouteChildren: ApiAdminKnowledgeDocumentsRouteChildren =
+  {
+    ApiAdminKnowledgeDocumentsDocumentIdRoute:
+      ApiAdminKnowledgeDocumentsDocumentIdRouteWithChildren,
+    ApiAdminKnowledgeDocumentsActionsRoute:
+      ApiAdminKnowledgeDocumentsActionsRoute,
+    ApiAdminKnowledgeDocumentsUploadRoute:
+      ApiAdminKnowledgeDocumentsUploadRoute,
+  }
+
+const ApiAdminKnowledgeDocumentsRouteWithChildren =
+  ApiAdminKnowledgeDocumentsRoute._addFileChildren(
+    ApiAdminKnowledgeDocumentsRouteChildren,
+  )
+
+interface ApiAdminNotebooksRouteChildren {
+  ApiAdminNotebooksNotebookIdRoute: typeof ApiAdminNotebooksNotebookIdRoute
+}
+
+const ApiAdminNotebooksRouteChildren: ApiAdminNotebooksRouteChildren = {
+  ApiAdminNotebooksNotebookIdRoute: ApiAdminNotebooksNotebookIdRoute,
+}
+
+const ApiAdminNotebooksRouteWithChildren =
+  ApiAdminNotebooksRoute._addFileChildren(ApiAdminNotebooksRouteChildren)
+
+interface ApiAdminPaymentsRouteChildren {
+  ApiAdminPaymentsSubmissionIdRoute: typeof ApiAdminPaymentsSubmissionIdRoute
+}
+
+const ApiAdminPaymentsRouteChildren: ApiAdminPaymentsRouteChildren = {
+  ApiAdminPaymentsSubmissionIdRoute: ApiAdminPaymentsSubmissionIdRoute,
+}
+
+const ApiAdminPaymentsRouteWithChildren =
+  ApiAdminPaymentsRoute._addFileChildren(ApiAdminPaymentsRouteChildren)
+
+interface ApiAdminPromptTemplatesRouteChildren {
+  ApiAdminPromptTemplatesPromptIdRoute: typeof ApiAdminPromptTemplatesPromptIdRoute
+}
+
+const ApiAdminPromptTemplatesRouteChildren: ApiAdminPromptTemplatesRouteChildren =
+  {
+    ApiAdminPromptTemplatesPromptIdRoute: ApiAdminPromptTemplatesPromptIdRoute,
+  }
+
+const ApiAdminPromptTemplatesRouteWithChildren =
+  ApiAdminPromptTemplatesRoute._addFileChildren(
+    ApiAdminPromptTemplatesRouteChildren,
+  )
+
+interface ApiAdminSessionRouteChildren {
+  ApiAdminSessionGoogleRoute: typeof ApiAdminSessionGoogleRoute
+}
+
+const ApiAdminSessionRouteChildren: ApiAdminSessionRouteChildren = {
+  ApiAdminSessionGoogleRoute: ApiAdminSessionGoogleRoute,
+}
+
+const ApiAdminSessionRouteWithChildren = ApiAdminSessionRoute._addFileChildren(
+  ApiAdminSessionRouteChildren,
+)
+
+interface ApiAdminStudentProfilesRouteChildren {
+  ApiAdminStudentProfilesUserIdRoute: typeof ApiAdminStudentProfilesUserIdRoute
+}
+
+const ApiAdminStudentProfilesRouteChildren: ApiAdminStudentProfilesRouteChildren =
+  {
+    ApiAdminStudentProfilesUserIdRoute: ApiAdminStudentProfilesUserIdRoute,
+  }
+
+const ApiAdminStudentProfilesRouteWithChildren =
+  ApiAdminStudentProfilesRoute._addFileChildren(
+    ApiAdminStudentProfilesRouteChildren,
+  )
+
+interface ApiAdminUsersUserIdRouteChildren {
+  ApiAdminUsersUserIdCreditsRoute: typeof ApiAdminUsersUserIdCreditsRoute
+}
+
+const ApiAdminUsersUserIdRouteChildren: ApiAdminUsersUserIdRouteChildren = {
+  ApiAdminUsersUserIdCreditsRoute: ApiAdminUsersUserIdCreditsRoute,
+}
+
+const ApiAdminUsersUserIdRouteWithChildren =
+  ApiAdminUsersUserIdRoute._addFileChildren(ApiAdminUsersUserIdRouteChildren)
+
+interface ApiAdminUsersRouteChildren {
+  ApiAdminUsersUserIdRoute: typeof ApiAdminUsersUserIdRouteWithChildren
+  ApiAdminUsersActionsRoute: typeof ApiAdminUsersActionsRoute
+}
+
+const ApiAdminUsersRouteChildren: ApiAdminUsersRouteChildren = {
+  ApiAdminUsersUserIdRoute: ApiAdminUsersUserIdRouteWithChildren,
+  ApiAdminUsersActionsRoute: ApiAdminUsersActionsRoute,
+}
+
+const ApiAdminUsersRouteWithChildren = ApiAdminUsersRoute._addFileChildren(
+  ApiAdminUsersRouteChildren,
+)
+
+interface ApiAdminSubscriptionsPlansRouteChildren {
+  ApiAdminSubscriptionsPlansPlanIdRoute: typeof ApiAdminSubscriptionsPlansPlanIdRoute
+}
+
+const ApiAdminSubscriptionsPlansRouteChildren: ApiAdminSubscriptionsPlansRouteChildren =
+  {
+    ApiAdminSubscriptionsPlansPlanIdRoute:
+      ApiAdminSubscriptionsPlansPlanIdRoute,
+  }
+
+const ApiAdminSubscriptionsPlansRouteWithChildren =
+  ApiAdminSubscriptionsPlansRoute._addFileChildren(
+    ApiAdminSubscriptionsPlansRouteChildren,
+  )
+
+interface ApiAdminSubscriptionsUserSubscriptionsRouteChildren {
+  ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute: typeof ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute
+}
+
+const ApiAdminSubscriptionsUserSubscriptionsRouteChildren: ApiAdminSubscriptionsUserSubscriptionsRouteChildren =
+  {
+    ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute:
+      ApiAdminSubscriptionsUserSubscriptionsSubscriptionIdRoute,
+  }
+
+const ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren =
+  ApiAdminSubscriptionsUserSubscriptionsRoute._addFileChildren(
+    ApiAdminSubscriptionsUserSubscriptionsRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  NotebooksRoute: NotebooksRoute,
+  AdminKnowledgeRoute: AdminKnowledgeRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
+  ApiAdminAnswersRoute: ApiAdminAnswersRouteWithChildren,
+  ApiAdminAuthUsersRoute: ApiAdminAuthUsersRoute,
+  ApiAdminChatMessagesRoute: ApiAdminChatMessagesRoute,
+  ApiAdminChatSessionsRoute: ApiAdminChatSessionsRoute,
+  ApiAdminCreditsLedgerRoute: ApiAdminCreditsLedgerRoute,
+  ApiAdminInvoicesRoute: ApiAdminInvoicesRoute,
+  ApiAdminKnowledgeChunksRoute: ApiAdminKnowledgeChunksRoute,
+  ApiAdminKnowledgeDocumentsRoute: ApiAdminKnowledgeDocumentsRouteWithChildren,
+  ApiAdminNoteRevisionLogsRoute: ApiAdminNoteRevisionLogsRoute,
+  ApiAdminNotebooksRoute: ApiAdminNotebooksRouteWithChildren,
+  ApiAdminPaymentsRoute: ApiAdminPaymentsRouteWithChildren,
+  ApiAdminPromptTemplatesRoute: ApiAdminPromptTemplatesRouteWithChildren,
+  ApiAdminRevisionNotesRoute: ApiAdminRevisionNotesRoute,
+  ApiAdminSessionRoute: ApiAdminSessionRouteWithChildren,
+  ApiAdminStudentProfilesRoute: ApiAdminStudentProfilesRouteWithChildren,
+  ApiAdminUsersRoute: ApiAdminUsersRouteWithChildren,
+  ApiAdminSubscriptionsPlansRoute: ApiAdminSubscriptionsPlansRouteWithChildren,
+  ApiAdminSubscriptionsUserSubscriptionsRoute:
+    ApiAdminSubscriptionsUserSubscriptionsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
