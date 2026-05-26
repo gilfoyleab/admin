@@ -22,6 +22,10 @@ export const Route = createFileRoute("/")({
   }),
 });
 
+export function AdminPage() {
+  return <Admin />;
+}
+
 function Admin() {
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);

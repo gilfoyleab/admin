@@ -267,7 +267,7 @@ export async function listAdminStudentProfiles(url: string) {
     board: String(row.board ?? ""),
     grade: String(row.grade ?? ""),
     boardScore: row.board_score ? String(row.board_score) : "",
-    subjects: Array.isArray(row.subjects) ? row.subjects.map((v) => String(v)) : [],
+    subjects: Array.isArray(row.subjects) ? row.subjects.map((v: unknown) => String(v)) : [],
     targetGrade: String(row.target_grade ?? ""),
     languagePref: String(row.language_pref ?? "EN"),
     role: String(row.role ?? "student"),
@@ -345,7 +345,7 @@ export async function listAdminChatSessions(url: string) {
       citations: message.citations ?? null,
       feedback: message.feedback ? String(message.feedback) : "",
       followUpSuggestions: Array.isArray(message.follow_up_suggestions)
-        ? message.follow_up_suggestions.map((value) => String(value))
+        ? message.follow_up_suggestions.map((value: unknown) => String(value))
         : [],
       adminReviewNote: message.admin_review_note ? String(message.admin_review_note) : "",
       adminReviewedAt: message.admin_reviewed_at ? String(message.admin_reviewed_at) : "",
@@ -402,7 +402,7 @@ export async function listAdminChatSessions(url: string) {
       title: String(row.title ?? ""),
       subjectContext: row.subject_context ? String(row.subject_context) : "",
       subjectTags: Array.isArray(row.subject_tags)
-        ? row.subject_tags.map((value) => String(value))
+        ? row.subject_tags.map((value: unknown) => String(value))
         : [],
       createdAt: String(row.created_at),
       updatedAt: String(row.updated_at),
@@ -549,7 +549,7 @@ export async function listAdminChatMessages(url: string) {
       citations: row.citations ?? null,
       feedback: row.feedback ? String(row.feedback) : "",
       followUpSuggestions: Array.isArray(row.follow_up_suggestions)
-        ? row.follow_up_suggestions.map((value) => String(value))
+        ? row.follow_up_suggestions.map((value: unknown) => String(value))
         : [],
       adminReviewNote: row.admin_review_note ? String(row.admin_review_note) : "",
       adminReviewedAt: row.admin_reviewed_at ? String(row.admin_reviewed_at) : "",

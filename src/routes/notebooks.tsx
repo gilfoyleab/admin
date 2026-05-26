@@ -216,6 +216,10 @@ export const Route = createFileRoute("/notebooks")({
   }),
 });
 
+export function NotebookWorkspaceAppPage() {
+  return <NotebookWorkspacePage />;
+}
+
 function NotebookWorkspacePage() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<string | null>(null);
