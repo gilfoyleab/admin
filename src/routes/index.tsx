@@ -284,8 +284,8 @@ function Admin() {
           setAdding(false);
         }}
       />
-      <div className="mx-auto max-w-[1400px] px-5 py-6 grid grid-cols-[1fr_280px] gap-6">
-        <main>
+      <div className="mx-auto max-w-[1400px] px-4 py-4 lg:px-5 lg:py-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-6">
+        <main className="min-w-0">
           {mutationError ? (
             <div className="mb-3 bg-card border border-border rounded-[var(--radius)] px-4 py-3 text-xs text-danger">
               {mutationError}
@@ -383,11 +383,11 @@ function Header() {
 
   return (
     <header className="bg-primary text-primary-foreground">
-      <div className="mx-auto max-w-[1400px] px-5 py-2 flex items-center justify-between">
+      <div className="mx-auto max-w-[1400px] px-4 py-2 lg:px-5 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <h1 className="text-[18px] font-normal">
           <span className="opacity-90">Nano Syllabus</span> administration
         </h1>
-        <div className="text-xs flex items-center gap-3">
+        <div className="text-xs flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="opacity-90">Welcome,</span>
           <strong className="font-semibold">ADMIN</strong>
           <a className="text-primary-foreground/90 hover:underline" href="#">
@@ -474,38 +474,28 @@ function Sidebar({
   onPick: (n: string) => void;
   onHome: () => void;
 }) {
+  const appSummaries = useMemo(() => {
+    const grouped = groupModelsByApp(models);
+    return grouped.map(([app, list]) => ({
+      app,
+      tables: list.length,
+      rows: list.reduce((sum, item) => sum + (item.totalCount ?? item.rows.length), 0),
+    }));
+  }, [models]);
+
   return (
     <aside className="space-y-4">
-      <Module title="Recent actions">
-        <div className="px-3 py-2 text-xs text-muted-foreground">
-          <p className="font-semibold text-foreground mb-1">My actions</p>
-          <ul className="space-y-1">
-            <li>
-              <a href="#" className="text-link hover:underline">
-                Aarav Sharma
-              </a>{" "}
-              <span className="text-muted-foreground">· User</span>
+      <Module title="System summary">
+        <ul className="divide-y divide-border text-xs">
+          {appSummaries.map((summary) => (
+            <li key={summary.app} className="px-3 py-2">
+              <p className="font-semibold text-foreground">{summary.app}</p>
+              <p className="mt-1 text-muted-foreground">
+                {summary.tables} tables · {summary.rows} rows
+              </p>
             </li>
-            <li>
-              <a href="#" className="text-link hover:underline">
-                Pro plan
-              </a>{" "}
-              <span className="text-muted-foreground">· Subscription plan</span>
-            </li>
-            <li>
-              <a href="#" className="text-link hover:underline">
-                INV-1042
-              </a>{" "}
-              <span className="text-muted-foreground">· Invoice</span>
-            </li>
-            <li>
-              <a href="#" className="text-link hover:underline">
-                Tutor Default
-              </a>{" "}
-              <span className="text-muted-foreground">· Prompt template</span>
-            </li>
-          </ul>
-        </div>
+          ))}
+        </ul>
       </Module>
       <Module title="Navigation">
         <ul className="text-xs">
@@ -563,46 +553,47 @@ function Dashboard({
           <h2 className="bg-primary text-primary-foreground text-[12px] uppercase tracking-wide font-semibold px-3 py-1.5 flex justify-between">
             <span>{app}</span>
           </h2>
-          <table className="w-full text-sm">
-            <tbody>
-              {list.map((m, i) => (
-                <tr key={m.name} className={i % 2 ? "bg-[oklch(0.98_0.003_230)]" : ""}>
-                  <td className="px-3 py-2 w-2/3">
-                    <button
-                      onClick={() => onPick(m.name)}
-                      className="text-link hover:underline font-medium"
-                    >
-                      {modelListLabel(m)}
-                    </button>
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      ({m.totalCount ?? m.rows.length})
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 text-right text-xs">
-                    {m.name === "knowledge_notebooks" || m.name === "knowledge_documents" ? (
-                      <a href="/notebooks" className="text-link hover:underline">
-                        Workspace
-                      </a>
-                    ) : (
-                      <>
-                        {canAddModel(m.name) ? (
-                          <button
-                            onClick={() => onAdd(m.name)}
-                            className="text-link hover:underline mr-3"
-                          >
-                            + Add
-                          </button>
-                        ) : null}
-                        <button onClick={() => onPick(m.name)} className="text-link hover:underline">
-                          Change
+          <div className="divide-y divide-border">
+            {list.map((m, i) => (
+              <div
+                key={m.name}
+                className={`px-3 py-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between ${i % 2 ? "bg-[oklch(0.98_0.003_230)]" : ""}`}
+              >
+                <div className="min-w-0">
+                  <button
+                    onClick={() => onPick(m.name)}
+                    className="text-link hover:underline font-medium break-all text-left"
+                  >
+                    {modelListLabel(m)}
+                  </button>
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    ({m.totalCount ?? m.rows.length})
+                  </span>
+                </div>
+                <div className="text-xs flex items-center gap-3 md:justify-end">
+                  {m.name === "knowledge_notebooks" || m.name === "knowledge_documents" ? (
+                    <a href="/notebooks" className="text-link hover:underline">
+                      Workspace
+                    </a>
+                  ) : (
+                    <>
+                      {canAddModel(m.name) ? (
+                        <button
+                          onClick={() => onAdd(m.name)}
+                          className="text-link hover:underline"
+                        >
+                          + Add
                         </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      ) : null}
+                      <button onClick={() => onPick(m.name)} className="text-link hover:underline">
+                        Change
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       ))}
     </div>
@@ -701,7 +692,7 @@ function ListView({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
         <h1 className="text-[20px] font-normal text-foreground">
           Select {model.verbose.toLowerCase()} to change
         </h1>
@@ -724,7 +715,7 @@ function ListView({
       </div>
 
       <div className="bg-card border border-border rounded-[var(--radius)]">
-        <div className="p-3 border-b border-border flex gap-2">
+        <div className="p-3 border-b border-border flex flex-col gap-2 sm:flex-row">
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -764,7 +755,7 @@ function ListView({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[960px] text-sm">
             <thead>
               <tr className="bg-[oklch(0.94_0.005_230)] border-b border-border text-left">
                 <th className="px-2 py-2 w-8">
@@ -884,11 +875,11 @@ function DetailView({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
         <h1 className="text-[20px] font-normal">
           {isNew ? `Add ${model.verbose.toLowerCase()}` : `Change ${model.verbose.toLowerCase()}`}
         </h1>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {(model.name === "knowledge_notebooks" || model.name === "knowledge_documents") && (
             <button
               type="button"
