@@ -1277,53 +1277,6 @@ function NotebookWorkspacePage() {
           </section>
 
           <section className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
-            <div className="px-4 py-3 border-b border-border">
-              <h2 className="text-lg font-semibold">knowledge_chunks preview</h2>
-              <p className="text-sm text-muted-foreground">
-                Preview of chunk rows linked to the selected knowledge_documents record.
-              </p>
-            </div>
-            {!selectedResource ? (
-              <div className="px-4 py-8 text-sm text-muted-foreground">
-                Select a resource to inspect its chunk rows.
-              </div>
-            ) : notebookDetail?.selectedResourceChunkTotal ? (
-              <div>
-                <div className="px-4 py-3 text-xs text-muted-foreground border-b border-border">
-                  Showing first {notebookDetail.selectedResourceChunks.length} of{" "}
-                  {notebookDetail.selectedResourceChunkTotal} chunk rows for this document.
-                </div>
-                <div className="divide-y divide-border">
-                  {notebookDetail.selectedResourceChunks.map((chunk) => (
-                    <div key={chunk.id} className="px-4 py-4 space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="text-sm font-medium">
-                          Chunk #{chunk.chunkIndex + 1}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {chunk.subject} · {chunk.grade}
-                          {chunk.chapter ? ` · ${chunk.chapter}` : ""}
-                        </div>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        topic: {chunk.topic ?? selectedResource.title}
-                      </p>
-                      <pre className="whitespace-pre-wrap rounded-md border border-input bg-background p-3 text-xs leading-5">
-                        {chunk.content}
-                      </pre>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="px-4 py-8 text-sm text-muted-foreground">
-                No chunk rows found yet for this resource. Upload/process this document to create
-                knowledge_chunks rows.
-              </div>
-            )}
-          </section>
-
-          <section className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
             <div className="px-4 py-3 border-b border-border flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-lg font-semibold">Upload file into resource</h2>
@@ -1361,6 +1314,92 @@ function NotebookWorkspacePage() {
                 Auto process after upload
               </label>
             </div>
+          </section>
+
+          <section className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
+              <h2 className="text-lg font-semibold">Processed chunks</h2>
+              <p className="text-sm text-muted-foreground">
+                Chunks are generated only after this resource is uploaded and processed. Manage
+                notebook and resource first, then inspect chunk rows here.
+              </p>
+            </div>
+
+            {!selectedResource ? (
+              <div className="px-4 py-8 text-sm text-muted-foreground">
+                Select a resource first. Chunks belong to one knowledge_documents row at a time.
+              </div>
+            ) : (
+              <div className="p-4 space-y-4">
+                <div className="grid gap-3 md:grid-cols-3">
+                  <div className="rounded-md border border-input bg-background px-4 py-3">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Resource
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-foreground">
+                      {selectedResource.title}
+                    </p>
+                  </div>
+                  <div className="rounded-md border border-input bg-background px-4 py-3">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Processing status
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-foreground">
+                      {selectedResource.processingStatus}
+                    </p>
+                  </div>
+                  <div className="rounded-md border border-input bg-background px-4 py-3">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Total chunks
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-foreground">
+                      {notebookDetail?.selectedResourceChunkTotal ?? 0}
+                    </p>
+                  </div>
+                </div>
+
+                {notebookDetail?.selectedResourceChunkTotal ? (
+                  <details className="rounded-md border border-input bg-background">
+                    <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span>knowledge_chunks preview</span>
+                        <span className="text-xs text-muted-foreground">
+                          Showing first {notebookDetail.selectedResourceChunks.length} of{" "}
+                          {notebookDetail.selectedResourceChunkTotal} rows
+                        </span>
+                      </div>
+                    </summary>
+                    <div className="border-t border-input divide-y divide-border">
+                      {notebookDetail.selectedResourceChunks.map((chunk) => (
+                        <div key={chunk.id} className="px-4 py-4 space-y-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div className="text-sm font-medium">
+                              Chunk #{chunk.chunkIndex + 1}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {chunk.subject} · {chunk.grade}
+                              {chunk.chapter ? ` · ${chunk.chapter}` : ""}
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            topic: {chunk.topic ?? selectedResource.title}
+                          </p>
+                          <pre className="whitespace-pre-wrap rounded-md border border-input bg-card p-3 text-xs leading-5">
+                            {chunk.content}
+                          </pre>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                ) : (
+                  <div className="rounded-md border border-dashed border-input bg-background px-4 py-6 text-sm text-muted-foreground">
+                    No chunk rows found yet for this resource. Upload the file and run{" "}
+                    <span className="font-medium text-foreground">Chunk + vectorize</span> to create
+                    knowledge_chunks rows.
+                  </div>
+                )}
+              </div>
+            )}
           </section>
         </section>
       </div>
