@@ -232,6 +232,7 @@ function NotebookWorkspacePage() {
     | "processing"
     | "deletingResource"
     | "uploading"
+    | "uploadProcessing"
     | "bulkProcessing"
   >("idle");
   const [notebookListLoading, setNotebookListLoading] = useState(false);
@@ -732,7 +733,7 @@ function NotebookWorkspacePage() {
       payload.set("sourceName", resourceForm.sourceName);
       payload.set("resourceKind", resourceForm.resourceKind);
       payload.set("resourceSubtype", resourceForm.resourceSubtype);
-      payload.set("autoProcess", uploadAutoProcess ? "true" : "false");
+      payload.set("autoProcess", "false");
 
       const response = await fetch("/api/admin/knowledge-documents/upload", {
         method: "POST",
@@ -758,15 +759,44 @@ function NotebookWorkspacePage() {
       setSelectedResourceId(savedResource?.id ?? "new");
       setResourceForm(savedResource ? toResourceFormState(savedResource) : EMPTY_RESOURCE);
       setUploadFile(null);
-      setFeedback(
-        uploadAutoProcess
-          ? `Uploaded + processed ${uploadResult.extracted?.sourceName ?? "file"} (${
-              uploadResult.document?.chunkCount ?? 0
-            } chunks).`
-          : `Uploaded ${uploadResult.extracted?.sourceName ?? "file"} (${
-              uploadResult.extracted?.characterCount ?? 0
-            } chars extracted).`,
-      );
+
+      if (uploadAutoProcess && savedId) {
+        setBusy("uploadProcessing");
+        setFeedback(`Uploaded ${uploadResult.extracted?.sourceName ?? "file"}. Processing chunks...`);
+
+        const processResponse = await fetch(`/api/admin/knowledge-documents/${savedId}/process`, {
+          method: "POST",
+          credentials: "include",
+        });
+        const processPayload = (await processResponse.json()) as {
+          document?: { chunkCount?: number };
+          error?: string;
+        };
+        if (!processResponse.ok) {
+          throw new Error(processPayload.error ?? "Uploaded file but failed to process chunks.");
+        }
+
+        await refreshNotebooks(notebookId, notebookPage);
+        const processedNotebook = await loadNotebookDetail(notebookId, {
+          resourcePage: 1,
+          resourceQ: "",
+        });
+        const processedResource =
+          processedNotebook.resources.find((resource) => resource.id === savedId) ?? null;
+        setSelectedResourceId(processedResource?.id ?? savedId);
+        setResourceForm(processedResource ? toResourceFormState(processedResource) : EMPTY_RESOURCE);
+        setFeedback(
+          `Uploaded + processed ${uploadResult.extracted?.sourceName ?? "file"} (${
+            processedResource?.chunkCount ?? processPayload.document?.chunkCount ?? 0
+          } chunks).`,
+        );
+      } else {
+        setFeedback(
+          `Uploaded ${uploadResult.extracted?.sourceName ?? "file"} (${
+            uploadResult.extracted?.characterCount ?? 0
+          } chars extracted).`,
+        );
+      }
     } catch (error) {
       setFeedback(error instanceof Error ? error.message : "Failed to upload resource file.");
     } finally {
@@ -1291,6 +1321,8 @@ function NotebookWorkspacePage() {
               >
                 {busy === "uploading"
                   ? "Uploading..."
+                  : busy === "uploadProcessing"
+                    ? "Processing..."
                   : selectedResource
                     ? "Replace from file"
                     : "Upload and create"}
