@@ -232,7 +232,6 @@ function NotebookWorkspacePage() {
     | "processing"
     | "deletingResource"
     | "uploading"
-    | "uploadProcessing"
     | "bulkProcessing"
   >("idle");
   const [notebookListLoading, setNotebookListLoading] = useState(false);
@@ -258,7 +257,6 @@ function NotebookWorkspacePage() {
   const [selectedResourceIds, setSelectedResourceIds] = useState<string[]>([]);
   const [resourceForm, setResourceForm] = useState<ResourceFormState>(EMPTY_RESOURCE);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadAutoProcess, setUploadAutoProcess] = useState(true);
 
   function syncWorkspaceUrl(params: { notebookId?: string | null; resourceId?: string | null }) {
     const nextUrl = new URL(window.location.href);
@@ -290,6 +288,9 @@ function NotebookWorkspacePage() {
 
   const subtypeOptions =
     RESOURCE_SUBTYPE_OPTIONS[resourceForm.resourceKind] ?? RESOURCE_SUBTYPE_OPTIONS.study_material;
+  const resourceHasStoredSource = Boolean(selectedResource?.storagePath);
+  const resourceHasExtractedText = resourceForm.rawContent.trim().length > 0;
+  const resourceHasChunks = Boolean(selectedResource && selectedResource.chunkCount > 0);
 
   const refreshNotebooks = useCallback(
     async (nextNotebookId?: string, requestedPage?: number) => {
@@ -759,44 +760,11 @@ function NotebookWorkspacePage() {
       setSelectedResourceId(savedResource?.id ?? "new");
       setResourceForm(savedResource ? toResourceFormState(savedResource) : EMPTY_RESOURCE);
       setUploadFile(null);
-
-      if (uploadAutoProcess && savedId) {
-        setBusy("uploadProcessing");
-        setFeedback(`Uploaded ${uploadResult.extracted?.sourceName ?? "file"}. Processing chunks...`);
-
-        const processResponse = await fetch(`/api/admin/knowledge-documents/${savedId}/process`, {
-          method: "POST",
-          credentials: "include",
-        });
-        const processPayload = (await processResponse.json()) as {
-          document?: { chunkCount?: number };
-          error?: string;
-        };
-        if (!processResponse.ok) {
-          throw new Error(processPayload.error ?? "Uploaded file but failed to process chunks.");
-        }
-
-        await refreshNotebooks(notebookId, notebookPage);
-        const processedNotebook = await loadNotebookDetail(notebookId, {
-          resourcePage: 1,
-          resourceQ: "",
-        });
-        const processedResource =
-          processedNotebook.resources.find((resource) => resource.id === savedId) ?? null;
-        setSelectedResourceId(processedResource?.id ?? savedId);
-        setResourceForm(processedResource ? toResourceFormState(processedResource) : EMPTY_RESOURCE);
-        setFeedback(
-          `Uploaded + processed ${uploadResult.extracted?.sourceName ?? "file"} (${
-            processedResource?.chunkCount ?? processPayload.document?.chunkCount ?? 0
-          } chunks).`,
-        );
-      } else {
-        setFeedback(
-          `Uploaded ${uploadResult.extracted?.sourceName ?? "file"} (${
-            uploadResult.extracted?.characterCount ?? 0
-          } chars extracted).`,
-        );
-      }
+      setFeedback(
+        `Uploaded ${uploadResult.extracted?.sourceName ?? "file"} (${
+          uploadResult.extracted?.characterCount ?? 0
+        } chars extracted). Next step: review raw content, then click Chunk + vectorize.`,
+      );
     } catch (error) {
       setFeedback(error instanceof Error ? error.message : "Failed to upload resource file.");
     } finally {
@@ -1124,6 +1092,42 @@ function NotebookWorkspacePage() {
           </section>
 
           <section className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
+              <h2 className="text-lg font-semibold">Step-by-step workflow</h2>
+              <p className="text-sm text-muted-foreground">
+                Save the notebook first, then save one resource row, upload the source file, verify
+                the extracted text, and only then run chunk + vectorize.
+              </p>
+            </div>
+            <div className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-4">
+              <WorkflowStep
+                step={1}
+                title="Save notebook"
+                description="Create or update the knowledge_notebooks row before you add any resources."
+                active={!notebookDetail}
+              />
+              <WorkflowStep
+                step={2}
+                title="Save resource"
+                description="Create one knowledge_documents row for one chapter, one PDF, or one study material file."
+                active={Boolean(notebookDetail) && !selectedResource}
+              />
+              <WorkflowStep
+                step={3}
+                title="Upload + verify"
+                description="Upload the source file and check that raw_content now contains the extracted text."
+                active={Boolean(notebookDetail) && !resourceHasExtractedText}
+              />
+              <WorkflowStep
+                step={4}
+                title="Chunk + vectorize"
+                description="Only after the file is stored and verified should you generate chunks and embeddings."
+                active={resourceHasExtractedText && !resourceHasChunks}
+              />
+            </div>
+          </section>
+
+          <section className="bg-card border border-border rounded-[var(--radius)] overflow-hidden">
             <div className="px-4 py-3 border-b border-border flex items-start justify-between gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -1277,6 +1281,20 @@ function NotebookWorkspacePage() {
                 </Field>
               </div>
             ) : null}
+            {selectedResource ? (
+              <div className="px-4 pb-4">
+                <div className="rounded-md border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+                  <span className="font-medium">Recommended flow:</span>{" "}
+                  {!resourceHasStoredSource
+                    ? "Save this resource row, then upload the source file as the next step."
+                    : !resourceHasExtractedText
+                      ? "The file is stored. Review or wait for extracted text in raw_content before processing."
+                      : !resourceHasChunks
+                        ? "The file and text are ready. Click Chunk + vectorize only when the content looks correct."
+                        : "This resource already has chunks. Re-run processing only if you replaced the source or edited raw_content."}
+                </div>
+              </div>
+            ) : null}
             <div className="px-4 pb-4">
               <details className="rounded-md border border-input bg-background">
                 <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium">
@@ -1311,7 +1329,8 @@ function NotebookWorkspacePage() {
               <div>
                 <h2 className="text-lg font-semibold">Upload file into resource</h2>
                 <p className="text-sm text-muted-foreground">
-                  PDF, DOCX, TXT, Markdown. You can auto-process after upload.
+                  PDF, DOCX, TXT, Markdown. This step stores the source file and extracted text
+                  only. Processing happens in the next step.
                 </p>
               </div>
               <Button
@@ -1321,8 +1340,6 @@ function NotebookWorkspacePage() {
               >
                 {busy === "uploading"
                   ? "Uploading..."
-                  : busy === "uploadProcessing"
-                    ? "Processing..."
                   : selectedResource
                     ? "Replace from file"
                     : "Upload and create"}
@@ -1337,14 +1354,16 @@ function NotebookWorkspacePage() {
                   className="block w-full rounded-md border border-dashed border-input bg-background px-3 py-5 text-sm"
                 />
               </Field>
-              <label className="flex items-center gap-3 rounded-md border border-input bg-background px-3 py-3 text-sm">
-                <input
-                  type="checkbox"
-                  checked={uploadAutoProcess}
-                  onChange={(event) => setUploadAutoProcess(event.target.checked)}
-                />
-                Auto process after upload
-              </label>
+              <div className="rounded-md border border-input bg-background px-4 py-3 text-sm">
+                <p className="mb-1 font-medium">What this step does</p>
+                <p className="text-muted-foreground">
+                  1. Stores the source file
+                  <br />
+                  2. Extracts text into <code>raw_content</code>
+                  <br />
+                  3. Leaves chunking for the next explicit action
+                </p>
+              </div>
             </div>
           </section>
 
@@ -1463,5 +1482,37 @@ function Field({
       <span className="text-xs font-medium text-muted-foreground">{label}</span>
       {children}
     </label>
+  );
+}
+
+function WorkflowStep({
+  step,
+  title,
+  description,
+  active = false,
+}: {
+  step: number;
+  title: string;
+  description: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-md border px-4 py-3 ${
+        active ? "border-sky-300 bg-sky-50" : "border-input bg-background"
+      }`}
+    >
+      <div className="mb-1 flex items-center gap-2">
+        <span
+          className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
+            active ? "bg-sky-600 text-white" : "bg-slate-200 text-slate-700"
+          }`}
+        >
+          {step}
+        </span>
+        <span className="text-sm font-semibold">{title}</span>
+      </div>
+      <p className="text-xs text-muted-foreground">{description}</p>
+    </div>
   );
 }
