@@ -120,9 +120,11 @@ async function handleAdminRoute(request: Request, slug: string[]) {
         subjects?: string[];
         targetGrade?: string;
         languagePref: "EN" | "RN";
-        role: "student" | "admin";
+        role: "student" | "admin" | "super_admin";
       };
       await updateAdminStudentProfile({
+        actorUserId: access.userId,
+        actorRole: access.role,
         userId: slug[1],
         fullName: payload.fullName,
         college: payload.college,
@@ -145,19 +147,29 @@ async function handleAdminRoute(request: Request, slug: string[]) {
     if (request.method === "POST" && path === "users/actions") {
       const payload = (await request.json()) as {
         action: "set_role";
-        role: "student" | "admin";
+        role: "student" | "admin" | "super_admin";
         userIds: string[];
       };
       if (payload.action !== "set_role") {
         return Response.json({ error: "Unsupported action." }, { status: 400 });
       }
-      const result = await bulkUpdateAdminUserRoles(payload.userIds, payload.role);
+      const result = await bulkUpdateAdminUserRoles({
+        actorUserId: access.userId,
+        actorRole: access.role,
+        userIds: payload.userIds,
+        role: payload.role,
+      });
       return Response.json(result);
     }
 
     if (request.method === "PATCH" && slug[0] === "users" && slug[1] && slug.length === 2) {
-      const payload = (await request.json()) as { role: "student" | "admin" };
-      await updateAdminUserRole(slug[1], payload.role);
+      const payload = (await request.json()) as { role: "student" | "admin" | "super_admin" };
+      await updateAdminUserRole({
+        actorUserId: access.userId,
+        actorRole: access.role,
+        userId: slug[1],
+        role: payload.role,
+      });
       return Response.json({ ok: true });
     }
 

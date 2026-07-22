@@ -6,7 +6,7 @@ export const Route = createFileRoute("/api/admin/student-profiles/$userId")({
   server: {
     handlers: {
       PATCH: async ({ request, params }) =>
-        withAdmin(request, async () => {
+        withAdmin(request, async (access) => {
           const payload = (await request.json()) as {
             fullName: string;
             college: string;
@@ -16,9 +16,11 @@ export const Route = createFileRoute("/api/admin/student-profiles/$userId")({
             subjects?: string[];
             targetGrade?: string;
             languagePref: "EN" | "RN";
-            role: "student" | "admin";
+            role: "student" | "admin" | "super_admin";
           };
           await updateAdminStudentProfile({
+            actorUserId: access.userId,
+            actorRole: access.role,
             userId: params.userId,
             fullName: payload.fullName,
             college: payload.college,

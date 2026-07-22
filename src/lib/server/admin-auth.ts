@@ -45,6 +45,7 @@ export function clearSessionCookies() {
 type AccessSuccess = {
   userId: string;
   email: string;
+  role: "admin" | "super_admin";
 };
 
 type AccessFailure = {
@@ -92,12 +93,13 @@ export async function assertAdminAccess(request: Request): Promise<AccessSuccess
     return { error: profileError.message, status: 500 };
   }
 
-  if (profile?.role !== "admin") {
+  if (profile?.role !== "admin" && profile?.role !== "super_admin") {
     return { error: "Forbidden", status: 403 };
   }
 
   return {
     userId: user.id,
     email: user.email ?? "",
+    role: profile.role,
   };
 }

@@ -6,7 +6,7 @@ export function jsonError(message: string, status: number) {
 
 export async function withAdmin(
   request: Request,
-  handler: (access: { userId: string; email: string }) => Promise<Response>,
+  handler: (access: { userId: string; email: string; role: "admin" | "super_admin" }) => Promise<Response>,
 ) {
   try {
     const access = await assertAdminAccess(request);

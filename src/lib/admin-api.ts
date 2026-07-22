@@ -28,7 +28,7 @@ type AdminUserSummary = {
   fullName: string;
   board: string;
   grade: string;
-  role: "student" | "admin";
+  role: "student" | "admin" | "super_admin";
   onboarded: boolean;
   creditBalance: number;
   createdAt: string;
@@ -266,6 +266,12 @@ type SubscriptionPlan = {
   isActive: boolean;
 };
 
+function normalizeRole(value: unknown): "student" | "admin" | "super_admin" {
+  const role = String(value ?? "student");
+  if (role === "admin" || role === "super_admin") return role;
+  return "student";
+}
+
 type AdminSubscriptionSummary = {
   id: string;
   userId: string;
@@ -420,7 +426,7 @@ export async function saveModelRow(input: {
   if (modelName === "student_profiles") {
     const userId = String(row.id ?? "");
     if (!userId) throw new Error("User id is required.");
-    const role = String(row.role ?? "student") === "admin" ? "admin" : "student";
+    const role = normalizeRole(row.role);
     await requestJson(`/api/admin/student-profiles/${userId}`, {
       method: "PATCH",
       body: {

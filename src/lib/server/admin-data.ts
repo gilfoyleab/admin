@@ -18,6 +18,12 @@ export type AdminListPage<T> = {
 
 const KNOWLEDGE_CHUNK_INSERT_BATCH_SIZE = 50;
 
+export type AppRole = "student" | "admin" | "super_admin";
+
+function normalizeAppRole(role: unknown): AppRole {
+  return role === "admin" || role === "super_admin" ? role : "student";
+}
+
 type KnowledgeNotebookContext = {
   id: string;
   title: string;
@@ -1519,15 +1525,67 @@ function slugify(value: string) {
   );
 }
 
-export async function updateAdminUserRole(userId: string, role: "student" | "admin") {
+async function assertCanUpdateRole(input: {
+  actorUserId: string;
+  actorRole: "admin" | "super_admin";
+  targetUserId: string;
+  nextRole: AppRole;
+}) {
+  const supabase = createSupabaseAdminClient();
+  const { data: profile, error } = await supabase
+    .from("student_profiles")
+    .select("role")
+    .eq("user_id", input.targetUserId)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  const currentRole = normalizeAppRole(profile?.role);
+
+  if (currentRole !== input.nextRole && input.actorRole !== "super_admin") {
+    throw new Error("Only a super admin can change user roles.");
+  }
+
+  if (input.nextRole === "super_admin" && input.actorRole !== "super_admin") {
+    throw new Error("Only a super admin can grant super admin access.");
+  }
+
+  if (currentRole === "super_admin" && input.nextRole !== "super_admin") {
+    throw new Error("The primary super admin cannot be demoted.");
+  }
+
+  if (
+    currentRole === "super_admin" &&
+    input.actorRole !== "super_admin" &&
+    input.actorUserId !== input.targetUserId
+  ) {
+    throw new Error("Only a super admin can edit a super admin profile.");
+  }
+}
+
+export async function updateAdminUserRole(input: {
+  actorUserId: string;
+  actorRole: "admin" | "super_admin";
+  userId: string;
+  role: AppRole;
+}) {
+  await assertCanUpdateRole({
+    actorUserId: input.actorUserId,
+    actorRole: input.actorRole,
+    targetUserId: input.userId,
+    nextRole: input.role,
+  });
+
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase
     .from("student_profiles")
-    .upsert({ user_id: userId, role }, { onConflict: "user_id" });
+    .upsert({ user_id: input.userId, role: input.role }, { onConflict: "user_id" });
   if (error) throw error;
 }
 
 export async function updateAdminStudentProfile(input: {
+  actorUserId: string;
+  actorRole: "admin" | "super_admin";
   userId: string;
   fullName: string;
   college: string;
@@ -1537,8 +1595,15 @@ export async function updateAdminStudentProfile(input: {
   subjects?: string[];
   targetGrade?: string;
   languagePref: "EN" | "RN";
-  role: "student" | "admin";
+  role: AppRole;
 }) {
+  await assertCanUpdateRole({
+    actorUserId: input.actorUserId,
+    actorRole: input.actorRole,
+    targetUserId: input.userId,
+    nextRole: input.role,
+  });
+
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase.from("student_profiles").upsert(
     {
@@ -1558,12 +1623,27 @@ export async function updateAdminStudentProfile(input: {
   if (error) throw error;
 }
 
-export async function bulkUpdateAdminUserRoles(userIds: string[], role: "student" | "admin") {
-  const normalized = [...new Set(userIds.map((id) => id.trim()).filter(Boolean))];
+export async function bulkUpdateAdminUserRoles(input: {
+  actorUserId: string;
+  actorRole: "admin" | "super_admin";
+  userIds: string[];
+  role: AppRole;
+}) {
+  const normalized = [...new Set(input.userIds.map((id) => id.trim()).filter(Boolean))];
   if (!normalized.length) throw new Error("No user ids were provided.");
+
+  for (const userId of normalized) {
+    await assertCanUpdateRole({
+      actorUserId: input.actorUserId,
+      actorRole: input.actorRole,
+      targetUserId: userId,
+      nextRole: input.role,
+    });
+  }
+
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase.from("student_profiles").upsert(
-    normalized.map((userId) => ({ user_id: userId, role })),
+    normalized.map((userId) => ({ user_id: userId, role: input.role })),
     { onConflict: "user_id" },
   );
   if (error) throw error;
