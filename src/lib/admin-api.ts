@@ -14,6 +14,12 @@ export type Model = {
   totalCount?: number;
 };
 
+const HIDDEN_ADMIN_MODEL_NAMES = new Set([
+  "knowledge_notebooks",
+  "knowledge_documents",
+  "knowledge_chunks",
+]);
+
 type AdminListResponse<T> = {
   items: T[];
   total: number;
@@ -1360,5 +1366,8 @@ export async function loadAdminModels(): Promise<{ models: Model[]; warnings: st
     });
   }
 
-  return { models, warnings };
+  return {
+    models: models.filter((model) => !HIDDEN_ADMIN_MODEL_NAMES.has(model.name)),
+    warnings,
+  };
 }
